@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DoctorWho.Db
+namespace DoctorWhoDomain
 {
     public class Companion
     {

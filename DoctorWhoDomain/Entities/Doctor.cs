@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DoctorWho.Db
+namespace DoctorWhoDomain
 {
     public class Doctor
     {
@@ -10,7 +10,7 @@ namespace DoctorWho.Db
         public int DoctorNumber { get; set; }
 
         public DateTime BirthDate { get; set; }
-        public DateTime FirstEpisodeDate { get; set; }
+        public DateTime? FirstEpisodeDate { get; set; }
         public DateTime? LastEpisodeDate { get; set;}
 
         public List<Episode> Episodes { get; set;}

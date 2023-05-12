@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorWho.Db
+namespace DoctorWhoDomain
 {
     public class EnemyEpisode
     {

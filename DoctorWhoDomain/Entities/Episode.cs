@@ -1,4 +1,4 @@
-﻿namespace DoctorWho.Db
+﻿namespace DoctorWhoDomain
 {
     public class Episode
     {

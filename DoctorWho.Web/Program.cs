@@ -22,6 +22,8 @@ namespace DoctorWho.Web
                 app.UseSwaggerUI();
             }
 
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

@@ -1,4 +1,6 @@
-﻿namespace DoctorWho.Db
+﻿using DoctorWhoDomain;
+
+namespace DoctorWho.Db
 {
     public interface ICompanionRepository
     {
