@@ -17,6 +17,13 @@ namespace DoctorWho.Db
         public string FnCompanionsResult(int EpisodeId) => throw new NotSupportedException();
         public string FnEnemiesResult(int EpisodeId) => throw new NotSupportedException();
 
+        public DoctorWhoCoreDbContext()
+        {
+        }
+
+        public DoctorWhoCoreDbContext(DbContextOptions<DoctorWhoCoreDbContext> options) : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source = (LocalDb)\\LocalDb; Initial Catalog = DoctorWhoCore")

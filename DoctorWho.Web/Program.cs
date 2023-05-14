@@ -1,4 +1,7 @@
+using DoctorWho.Db;
+using DoctorWho.Db.Repositories.Implementations;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Web
 {
@@ -15,13 +18,16 @@ namespace DoctorWho.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            
+            builder.Services.AddDbContext<DoctorWhoCoreDbContext>(DbContextOptions => DbContextOptions.UseSqlServer(builder.Configuration["ConnectionStrings:DoctorWhoDbConnectionString"]));
+
             builder.Services.AddValidatorsFromAssemblyContaining<DoctorValidator>(); 
             builder.Services.AddValidatorsFromAssemblyContaining<EpisodeValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<EnemyValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<CompanionValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<AuthorValidator>();
 
+            builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,14 +37,13 @@ namespace DoctorWho.Web
                 app.UseSwaggerUI();
             }
 
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            app.UseRouting();
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
-
-            app.MapControllers();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             app.Run();
         }
