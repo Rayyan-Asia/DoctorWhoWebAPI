@@ -9,6 +9,9 @@ namespace DoctorWho.Db
         Task RemoveDoctorAsync(Doctor doctorToRemove);
         Task<Doctor> UpdateDoctorAsync(Doctor updatedDoctor);
 
-        Task<bool> DoctorExists(int id);
+        Task<bool> DoctorExistsAsync(int id);
+
+        Task DeleteDoctorAsync(int doctorId);
+
     }
 }

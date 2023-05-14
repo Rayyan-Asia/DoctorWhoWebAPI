@@ -63,9 +63,20 @@ namespace DoctorWho.Db.Repositories.Implementations
 
         }
 
-        public Task<bool> DoctorExists(int id)
+        public Task<bool> DoctorExistsAsync(int id)
         {
             return _context.Doctors.AnyAsync(d => d.DoctorId == id);
+        }
+
+        public async Task DeleteDoctorAsync(int doctorId)
+        {
+            var existingDoctor = await _context.Doctors.FindAsync(doctorId);
+            if (existingDoctor == null)
+            {
+                throw new Exception($"Doctor with ID {doctorId} not found");
+            }
+            _context.Doctors.Remove(existingDoctor);
+            await _context.SaveChangesAsync();
         }
     }
 }

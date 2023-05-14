@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using AutoMapper;
 using DoctorWho.Db;
+using DoctorWho.Db.Repositories.Implementations;
 using DoctorWhoDomain;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,7 +50,7 @@ namespace DoctorWho.Web.Controllers
             {
                 await _repository.CreateDoctorAsync(doctor);
             }
-            bool exists = await _repository.DoctorExists(doctor.DoctorId);
+            bool exists = await _repository.DoctorExistsAsync(doctor.DoctorId);
             if (!exists)
             {
                 return NotFound();
@@ -59,6 +60,19 @@ namespace DoctorWho.Web.Controllers
 
             var returnedDoctor = _mapper.Map<DoctorDTO>(doctor);
             return Ok(returnedDoctor);
+        }
+
+        [HttpDelete("{doctorId}")]
+
+        public async Task<ActionResult> DeleteDoctor(int doctorId)
+        {
+            var doctorExists = await _repository.DoctorExistsAsync(doctorId);
+            if (!doctorExists)
+            {
+                return NotFound();
+            }
+            await _repository.DeleteDoctorAsync(doctorId);
+            return NoContent();
         }
 
     }
