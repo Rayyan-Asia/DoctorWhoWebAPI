@@ -8,7 +8,7 @@ namespace DoctorWho.Web
         public EpisodeProfile()
         {
             CreateMap<Episode, CreateEpisodeDTO>();
-            CreateMap<Episode, UpdateEpisodeDTO>();
+            CreateMap<Episode, EpisodeDTO>();
         }
     }
 

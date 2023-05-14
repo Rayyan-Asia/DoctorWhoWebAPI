@@ -1,6 +1,6 @@
 ﻿namespace DoctorWhoDomain
 {
-    public class UpdateDoctorDTO
+    public class DoctorDTO
     {
         public int DoctorId { get; set; }
         public string DoctorName { get; set; }

@@ -1,4 +1,5 @@
-﻿using DoctorWhoDomain;
+﻿using DoctorWho.Web;
+using DoctorWhoDomain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -43,9 +44,23 @@ namespace DoctorWho.Db.Repositories.Implementations
         }
 
 
-        public async Task<List<Doctor>> GetAvailableDoctorsAsync()
+        public async Task<(List<Doctor>, PaginationMetadata)> GetAvailableDoctorsAsync(int pageNumber, int pageSize)
         {
-            return await _context.Doctors.ToListAsync();
+            var doctors = await _context.Doctors.AsNoTracking().ToListAsync();
+
+            var count =  doctors.Count;
+
+            var metadata = new PaginationMetadata()
+            {
+                ItemCount = count,
+                PageCount = pageNumber,
+                PageSize = pageSize
+            };
+
+            var filteredDoctors = doctors.OrderBy(d => d.DoctorNumber)
+                .Skip(pageNumber * pageSize).Take(pageSize).ToList();
+            return (filteredDoctors,metadata);
+
         }
 
 

@@ -8,7 +8,7 @@ namespace DoctorWho.Web
         public EnemyProfile()
         {
             CreateMap<Enemy, CreateEnemyDTO>();
-            CreateMap<Enemy, UpdateEnemyDTO>();
+            CreateMap<Enemy, EnemyDTO>();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DoctorWhoDomain
 {
-    public class UpdateEpisodeDTO
+    public class EpisodeDTO
     {
         public int EpisodeId { get; set; }
         public int SeriesNumber { get; set; }

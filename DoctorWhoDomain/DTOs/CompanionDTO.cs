@@ -1,6 +1,6 @@
 ﻿namespace DoctorWhoDomain.DTOs
 {
-    public class UpdateCompanionDTO
+    public class CompanionDTO
     {
         public int CompanionId { get; set; }
         public string CompanionName { get; set; }

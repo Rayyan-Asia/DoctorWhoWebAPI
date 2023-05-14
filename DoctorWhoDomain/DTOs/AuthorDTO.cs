@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DoctorWhoDomain
 {
-    public class UpdateAuthorDTO
+    public class AuthorDTO
     {
         public int AuthorId { get; set; }
 

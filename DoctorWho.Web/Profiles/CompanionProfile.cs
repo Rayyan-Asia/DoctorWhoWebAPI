@@ -9,7 +9,7 @@ namespace DoctorWho.Web
     {
         public CompanionProfile() {
             CreateMap<Companion, CreateCompanionDTO>();
-            CreateMap<Companion, UpdateCompanionDTO>();
+            CreateMap<Companion, CompanionDTO>();
         }
     }
 }
