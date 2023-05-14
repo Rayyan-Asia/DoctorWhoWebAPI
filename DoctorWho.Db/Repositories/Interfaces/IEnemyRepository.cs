@@ -7,5 +7,6 @@ namespace DoctorWho.Db
         Task<Enemy> GetEnemyWithIdAsync(int enemyId);
         Task RemoveEnemyAsync(Enemy enemyToRemove);
         Task<Enemy> UpdateEnemyAsync(Enemy updatedEnemy);
+        Task<bool> EnemyExistsAsync(int enemyId);
     }
 }

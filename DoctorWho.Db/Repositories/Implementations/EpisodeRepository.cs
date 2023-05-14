@@ -1,4 +1,5 @@
-﻿using DoctorWho.Web;
+﻿using System;
+using DoctorWho.Web;
 using DoctorWhoDomain;
 using Microsoft.EntityFrameworkCore;
 
@@ -125,6 +126,22 @@ public class EpisodeRepository : IEpisodeRepository
         var filteredEpisodes = episodes.OrderBy(e => e.SeriesNumber)
             .Skip(pageNumber * pageSize).Take(pageSize).ToList();
         return (filteredEpisodes, metadata);
+    }
+
+    public async Task<bool> EpisodeExistsAsync(int episodeId)
+    {
+        return await _context.Episodes.AnyAsync(e => e.EpisodeId == episodeId);
+    }
+
+    public async Task AddEnemyToEpisodeAsync(Enemy enemy, int episodeId)
+    {
+        var targetEpisode = await _context.Episodes.FindAsync(episodeId);
+
+        if (targetEpisode != null)
+        {
+            targetEpisode.Enemies.Add(enemy);
+            await _context.SaveChangesAsync();
+        }
     }
 }
 

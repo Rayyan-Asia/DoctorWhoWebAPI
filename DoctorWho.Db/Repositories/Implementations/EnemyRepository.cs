@@ -1,16 +1,11 @@
 ﻿using DoctorWhoDomain;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DoctorWho.Db.Repositories.Implementations
 {
     public class EnemyRepository : IEnemyRepository
     {
-        private DoctorWhoCoreDbContext _context = new ();
+        private DoctorWhoCoreDbContext _context = new();
         public async Task<Enemy> CreateEnemyAsync(Enemy enemy)
         {
             _context.Enemies.Add(enemy);
@@ -49,6 +44,11 @@ namespace DoctorWho.Db.Repositories.Implementations
                 throw new Exception("Enemy with this Id does not exist");
             }
             return enemy;
+        }
+
+        public async Task<bool> EnemyExistsAsync(int enemyId)
+        {
+            return await _context.Enemies.AnyAsync(e => e.EnemyId == enemyId);
         }
     }
 }

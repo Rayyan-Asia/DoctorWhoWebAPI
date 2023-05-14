@@ -11,20 +11,23 @@ namespace DoctorWho.Web.Controllers
     [Route("api/[controller]")]
     public class EpisodesController : Controller
     {
-
         private readonly IEpisodeRepository _episodeRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IEnemyRepository _enemyRepository;
         private readonly IMapper _mapper;
         private readonly EpisodeValidator _episodeValidator;
+        private readonly EnemyValidator _enemyValidator;
         const int maximumPageSize = 5;
-        public EpisodesController(IEpisodeRepository repository, IMapper mapper, IAuthorRepository authorRepository, IDoctorRepository doctorRepository)
+        public EpisodesController(IEpisodeRepository repository, IMapper mapper, IAuthorRepository authorRepository, IDoctorRepository doctorRepository, IEnemyRepository enemyRepository)
         {
             _episodeRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _episodeValidator = new EpisodeValidator();
+            _enemyValidator = new EnemyValidator();
             _authorRepository = authorRepository;
             _doctorRepository = doctorRepository;
+            _enemyRepository = enemyRepository;
         }
 
         [HttpGet]
@@ -55,16 +58,37 @@ namespace DoctorWho.Web.Controllers
             
             if(!await _authorRepository.AuthorExistsAsync(episode.AuthorId))
             {
-                return BadRequest($"Author with ID {episode.AuthorId} does not Exist");
+                return NotFound();
             }
 
             if (!await _doctorRepository.DoctorExistsAsync((int)episode.DoctorId))
             {
-                return BadRequest($"Doctor with ID {episode.DoctorId} does not Exist");
+                return NotFound();
             }
 
             await _episodeRepository.CreateEpisodeAsync(episode);
             return Ok(_mapper.Map<EpisodeDTO>(episode));
+        }
+
+        [HttpPost("{episodeId}/enemies")]
+        public async Task<ActionResult> AddEnemyToEpisode(int episodeId,[FromBody] EnemyDTO enemyDTO)
+        {
+            var enemy = _mapper.Map<Enemy>(enemyDTO);
+            var validationResult = _enemyValidator.Validate(enemy);
+            if(!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+            if (!await _episodeRepository.EpisodeExistsAsync(episodeId))
+            {
+                return NotFound();
+            }
+            if(!await _enemyRepository.EnemyExistsAsync(enemy.EnemyId))
+            {
+                return NotFound();
+            }
+
+            await _episodeRepository.AddEnemyToEpisodeAsync(enemy, episodeId);
+
+            return Ok();
         }
     }
 }

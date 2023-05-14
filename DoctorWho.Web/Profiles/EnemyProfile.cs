@@ -9,6 +9,8 @@ namespace DoctorWho.Web
         {
             CreateMap<Enemy, CreateEnemyDTO>();
             CreateMap<Enemy, EnemyDTO>();
+            CreateMap<CreateEnemyDTO, Enemy>();
+            CreateMap<EnemyDTO, Enemy>();
         }
     }
 }
