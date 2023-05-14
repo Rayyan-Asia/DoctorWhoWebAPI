@@ -8,5 +8,7 @@ namespace DoctorWho.Db
         Task<(List<Doctor>, PaginationMetadata)> GetAvailableDoctorsAsync(int pageNumber, int pageSize);
         Task RemoveDoctorAsync(Doctor doctorToRemove);
         Task<Doctor> UpdateDoctorAsync(Doctor updatedDoctor);
+
+        Task<bool> DoctorExists(int id);
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
 using AutoMapper;
 using DoctorWho.Db;
-using DoctorWho.Db.Repositories.Implementations;
 using DoctorWhoDomain;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorWho.Web.Controllers
@@ -14,11 +12,13 @@ namespace DoctorWho.Web.Controllers
     {
         private readonly IDoctorRepository _repository;
         private readonly IMapper _mapper;
+        private readonly DoctorValidator _doctorValidator;
         const int maximumPageSize = 5;
-        public DoctorsController(IDoctorRepository repository, IMapper mapper) {
-           _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        public DoctorsController(IDoctorRepository repository, IMapper mapper)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-
+            _doctorValidator = new DoctorValidator();
         }
 
         [HttpGet]
@@ -36,5 +36,30 @@ namespace DoctorWho.Web.Controllers
 
             return Ok(_mapper.Map<IEnumerable<DoctorDTO>>(doctors));
         }
+
+        [HttpPost]
+        public async Task<ActionResult<DoctorDTO>> UpsertDoctor([FromBody] DoctorDTO doctorDTO)
+        {
+            var doctor = _mapper.Map<Doctor>(doctorDTO);
+            var validationResult = _doctorValidator.Validate(doctor);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            if (doctorDTO.DoctorId == 0)
+            {
+                await _repository.CreateDoctorAsync(doctor);
+            }
+            bool exists = await _repository.DoctorExists(doctor.DoctorId);
+            if (!exists)
+            {
+                return NotFound();
+            }
+
+            await _repository.UpdateDoctorAsync(doctor);
+
+            var returnedDoctor = _mapper.Map<DoctorDTO>(doctor);
+            return Ok(returnedDoctor);
+        }
+
     }
 }

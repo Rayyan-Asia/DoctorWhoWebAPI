@@ -63,6 +63,9 @@ namespace DoctorWho.Db.Repositories.Implementations
 
         }
 
-
+        public Task<bool> DoctorExists(int id)
+        {
+            return _context.Doctors.AnyAsync(d => d.DoctorId == id);
+        }
     }
 }
