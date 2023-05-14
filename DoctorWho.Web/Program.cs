@@ -27,6 +27,8 @@ namespace DoctorWho.Web
             builder.Services.AddValidatorsFromAssemblyContaining<AuthorValidator>();
 
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+            builder.Services.AddScoped<IEpisodeRepository, EpisodeRepository>();
+            builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             var app = builder.Build();
 

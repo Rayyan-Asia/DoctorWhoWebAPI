@@ -1,4 +1,5 @@
-﻿using DoctorWhoDomain;
+﻿using DoctorWho.Web;
+using DoctorWhoDomain;
 namespace DoctorWho.Db
 {
     public interface IEpisodeRepository
@@ -8,5 +9,7 @@ namespace DoctorWho.Db
         Task<Episode> CreateEpisodeAsync(Episode episode);
         Task RemoveEpisodeAsync(Episode episodeToRemove);
         Task<Episode> UpdateEpisodeAsync(Episode updatedEpisode);
+
+        Task<(List<Episode>, PaginationMetadata)> GetEpisodesAsync(int pageNumber, int pageSize);
     }
 }

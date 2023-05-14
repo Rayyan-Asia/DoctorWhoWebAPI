@@ -1,6 +1,7 @@
 ﻿
 
 using DoctorWhoDomain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace DoctorWho.Db
@@ -37,6 +38,11 @@ namespace DoctorWho.Db
 
             _context.Authors.Remove(existingAuthor);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> AuthorExistsAsync(int authorId)
+        {
+            return await _context.Authors.AnyAsync(a => a.AuthorId == authorId);
         }
     }
 }

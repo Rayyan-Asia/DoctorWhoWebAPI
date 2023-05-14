@@ -1,4 +1,5 @@
-﻿using DoctorWhoDomain;
+﻿using DoctorWho.Web;
+using DoctorWhoDomain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorWho.Db;
@@ -108,6 +109,22 @@ public class EpisodeRepository : IEpisodeRepository
         }
     }
 
+    public async Task<(List<Episode>, PaginationMetadata)> GetEpisodesAsync(int pageNumber, int pageSize)
+    {
+        var episodes = await _context.Episodes.AsNoTracking().ToListAsync();
 
+        var count = episodes.Count;
+
+        var metadata = new PaginationMetadata()
+        {
+            ItemCount = count,
+            PageCount = pageNumber,
+            PageSize = pageSize
+        };
+
+        var filteredEpisodes = episodes.OrderBy(e => e.SeriesNumber)
+            .Skip(pageNumber * pageSize).Take(pageSize).ToList();
+        return (filteredEpisodes, metadata);
+    }
 }
 

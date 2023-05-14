@@ -7,5 +7,7 @@ namespace DoctorWho.Db
         Task<Author> CreateAuthorAsync(Author author);
         Task RemoveAuthorAsync(Author authorToRemove);
         Task<Author> UpdateAuthorAsync(Author updatedAuthor);
+
+        Task<bool> AuthorExistsAsync(int authorId);
     }
 }
