@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace DoctorWho.Web
 {
     public class Program
@@ -12,6 +14,13 @@ namespace DoctorWho.Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            
+            builder.Services.AddValidatorsFromAssemblyContaining<DoctorValidator>(); 
+            builder.Services.AddValidatorsFromAssemblyContaining<EpisodeValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<EnemyValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<CompanionValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<AuthorValidator>();
 
             var app = builder.Build();
 
