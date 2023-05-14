@@ -7,7 +7,7 @@ namespace DoctorWho.Web
     {
         public AuthorValidator()
         {
-            RuleFor(author => author.AuthorName).NotNull().MaximumLength(64)
+            RuleFor(author => author.AuthorName).NotNull().MaximumLength(64).NotEmpty()
                 .WithMessage("Name must not be empty and less than or equal 64 characters.");
         }
     }

@@ -13,7 +13,7 @@ namespace DoctorWho.Web
                 .WithMessage("Episode number must not be empty.");
             RuleFor(episode => episode.EpisodeType).NotNull().MaximumLength(32)
                 .WithMessage("Episode genres must not be empty and less than or equal 32 characters.");
-            RuleFor(episode => episode.Title).NotNull().MaximumLength(100)
+            RuleFor(episode => episode.Title).NotNull().MaximumLength(100).NotEmpty()
                 .WithMessage("Episode title must not be empty and less than or equal 100 characters.");
             RuleFor(episode => episode.EpisodeDate).NotNull()
                 .WithMessage("Episode date must not be empty.");
