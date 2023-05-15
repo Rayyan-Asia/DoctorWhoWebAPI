@@ -143,5 +143,16 @@ public class EpisodeRepository : IEpisodeRepository
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task AddCompanionToEpisodeAsync(Companion companion, int episodeId)
+    {
+        var targetEpisode = await _context.Episodes.FindAsync(episodeId);
+
+        if (targetEpisode != null)
+        {
+            targetEpisode.Companions.Add(companion);
+            await _context.SaveChangesAsync();
+        }
+    }
 }
 

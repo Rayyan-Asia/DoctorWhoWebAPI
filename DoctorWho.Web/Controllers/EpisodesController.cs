@@ -15,19 +15,24 @@ namespace DoctorWho.Web.Controllers
         private readonly IAuthorRepository _authorRepository;
         private readonly IDoctorRepository _doctorRepository;
         private readonly IEnemyRepository _enemyRepository;
+        private readonly ICompanionRepository _companionRepository; 
         private readonly IMapper _mapper;
         private readonly EpisodeValidator _episodeValidator;
         private readonly EnemyValidator _enemyValidator;
+        private readonly CompanionValidator _companionValidator;
         const int maximumPageSize = 5;
-        public EpisodesController(IEpisodeRepository repository, IMapper mapper, IAuthorRepository authorRepository, IDoctorRepository doctorRepository, IEnemyRepository enemyRepository)
+        public EpisodesController(IEpisodeRepository repository, IMapper mapper, 
+            IAuthorRepository authorRepository, IDoctorRepository doctorRepository, IEnemyRepository enemyRepository, ICompanionRepository companionRepository)
         {
             _episodeRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _episodeValidator = new EpisodeValidator();
-            _enemyValidator = new EnemyValidator();
-            _authorRepository = authorRepository;
-            _doctorRepository = doctorRepository;
-            _enemyRepository = enemyRepository;
+            _episodeValidator = new EpisodeValidator() ?? throw new ArgumentNullException(nameof(mapper));
+            _enemyValidator = new EnemyValidator() ?? throw new ArgumentNullException(nameof(mapper));
+            _companionValidator = new CompanionValidator() ?? throw new ArgumentNullException(nameof(mapper));
+            _authorRepository = authorRepository ?? throw new ArgumentNullException(nameof(authorRepository));
+            _doctorRepository = doctorRepository ?? throw new ArgumentNullException(nameof(doctorRepository));
+            _enemyRepository = enemyRepository ?? throw new ArgumentNullException(nameof(enemyRepository));
+            _companionRepository = companionRepository ?? throw new ArgumentNullException(nameof(companionRepository));
         }
 
         [HttpGet]
@@ -87,6 +92,27 @@ namespace DoctorWho.Web.Controllers
             }
 
             await _episodeRepository.AddEnemyToEpisodeAsync(enemy, episodeId);
+
+            return Ok();
+        }
+
+        [HttpPost("{episodeId}/companions")]
+        public async Task<ActionResult> AddCompanionToEpisode(int episodeId, [FromBody] CompanionDTO companionDTO)
+        {
+            var companion = _mapper.Map<Companion>(companionDTO);
+            var validationResult = _companionValidator.Validate(companion);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+            if (!await _episodeRepository.EpisodeExistsAsync(episodeId))
+            {
+                return NotFound();
+            }
+            if (!await _companionRepository.CompanionExistsAsync(companion.CompanionId))
+            {
+                return NotFound();
+            }
+            
+            await _episodeRepository.AddCompanionToEpisodeAsync(companion, episodeId);
 
             return Ok();
         }

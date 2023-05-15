@@ -5,6 +5,7 @@ namespace DoctorWho.Db
     public interface IEpisodeRepository
     {
         Task AddCompanionToEpisodeAsync(Companion companion, Episode episode);
+        Task AddCompanionToEpisodeAsync(Companion companion, int episodeId);
         Task AddEnemyToEpisodeAsync(Enemy enemy, Episode episode);
         Task AddEnemyToEpisodeAsync(Enemy enemy, int episodeId);
         Task<Episode> CreateEpisodeAsync(Episode episode);

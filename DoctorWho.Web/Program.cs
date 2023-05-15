@@ -30,6 +30,8 @@ namespace DoctorWho.Web
             builder.Services.AddScoped<IEpisodeRepository, EpisodeRepository>();
             builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
             builder.Services.AddScoped<IEnemyRepository, EnemyRepository>();
+            builder.Services.AddScoped<ICompanionRepository, CompanionRepository>();
+
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             var app = builder.Build();
 

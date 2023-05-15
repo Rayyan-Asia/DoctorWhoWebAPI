@@ -51,5 +51,10 @@ namespace DoctorWho.Db
             }
             return companion;
         }
+
+        public async Task<bool> CompanionExistsAsync(int companionId)
+        {
+            return await _context.Companions.AnyAsync(c => c.CompanionId == companionId);
+        }
     }
 }

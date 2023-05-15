@@ -1,4 +1,5 @@
-﻿namespace DoctorWhoDomain.DTOs
+﻿namespace DoctorWhoDomain
+
 {
     public class CompanionDTO
     {
